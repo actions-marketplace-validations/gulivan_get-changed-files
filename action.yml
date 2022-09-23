@@ -17,7 +17,7 @@ inputs:
   format:
     description: >
       Format of the steps output context.
-      Can be 'space-delimited', 'csv', or 'json'.
+      Can be 'space-delimited', 'csv', 'sql', or 'json'.
     required: true
     default: space-delimited
 outputs:

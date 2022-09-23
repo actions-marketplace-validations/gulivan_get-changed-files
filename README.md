@@ -25,7 +25,7 @@ See [action.yml](action.yml)
 # Scenarios
 
 - [Get all changed files as space-delimited](#get-all-changed-files-as-space-delimited)
-- [Get all added and modified files as CSV](#get-all-added-and-modified-files-as-csv)
+- [Get all added and modified files as CSV or SQL](#get-all-added-and-modified-files-as-csv-or-sql)
 - [Get all removed files as JSON](#get-all-removed-files-as-json)
 
 ## Get all changed files as space-delimited
@@ -42,7 +42,7 @@ Consider using one of the other formats if that's the case.
     done
 ```
 
-## Get all added and modified files as CSV
+## Get all added and modified files as CSV or SQL
 
 ```yaml
 - id: files
@@ -55,6 +55,19 @@ Consider using one of the other formats if that's the case.
       echo "Do something with this ${added_modified_file}."
     done
 ```
+
+```yaml
+- id: files
+  uses: jitterbit/get-changed-files@v1
+  with:
+    format: 'sql'
+- run: |
+    mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
+    for added_modified_file in "${added_modified_files[@]}"; do
+      echo "Do something with this ${added_modified_file}."
+    done
+```
+
 
 ## Get all removed files as JSON
 

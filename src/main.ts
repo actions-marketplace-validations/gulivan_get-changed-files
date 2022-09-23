@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import {context, GitHub} from '@actions/github'
 
-type Format = 'space-delimited' | 'csv' | 'json'
+type Format = 'space-delimited' | 'csv' | 'json' | 'sql'
 type FileStatus = 'added' | 'modified' | 'removed' | 'renamed'
 
 async function run(): Promise<void> {
@@ -11,8 +11,8 @@ async function run(): Promise<void> {
     const format = core.getInput('format', {required: true}) as Format
 
     // Ensure that the format parameter is set properly.
-    if (format !== 'space-delimited' && format !== 'csv' && format !== 'json') {
-      core.setFailed(`Format must be one of 'string-delimited', 'csv', or 'json', got '${format}'.`)
+    if (format !== 'space-delimited' && format !== 'csv' && format !== 'json' && format !== 'sql')  {
+      core.setFailed(`Format must be one of 'string-delimited', 'csv', 'sql', or 'json', got '${format}'.`)
     }
 
     // Debug log the payload.
@@ -146,6 +146,7 @@ async function run(): Promise<void> {
         renamedFormatted = renamed.join(' ')
         addedModifiedFormatted = addedModified.join(' ')
         break
+      case 'sql':
       case 'csv':
         allFormatted = all.join(',')
         addedFormatted = added.join(',')

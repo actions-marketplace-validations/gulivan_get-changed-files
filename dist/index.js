@@ -3518,8 +3518,8 @@ function run() {
             const client = new github_1.GitHub(core.getInput('token', { required: true }));
             const format = core.getInput('format', { required: true });
             // Ensure that the format parameter is set properly.
-            if (format !== 'space-delimited' && format !== 'csv' && format !== 'json') {
-                core.setFailed(`Format must be one of 'string-delimited', 'csv', or 'json', got '${format}'.`);
+            if (format !== 'space-delimited' && format !== 'csv' && format !== 'json' && format !== 'sql') {
+                core.setFailed(`Format must be one of 'string-delimited', 'csv', 'sql', or 'json', got '${format}'.`);
             }
             // Debug log the payload.
             core.debug(`Payload keys: ${Object.keys(github_1.context.payload)}`);
@@ -3617,6 +3617,7 @@ function run() {
                     renamedFormatted = renamed.join(' ');
                     addedModifiedFormatted = addedModified.join(' ');
                     break;
+                case 'sql':
                 case 'csv':
                     allFormatted = all.join(',');
                     addedFormatted = added.join(',');
