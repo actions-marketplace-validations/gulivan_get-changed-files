@@ -57,14 +57,18 @@ Consider using one of the other formats if that's the case.
 ```
 
 ```yaml
-- id: files
-  uses: jitterbit/get-changed-files@v1
+- id: changed-files
+  uses: gulivan/get-changed-files@v1
   with:
     format: 'sql'
-- run: |
-    mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
+- name: execute changed files # bash script. Sometimes, not sql files are being parsed, so the if statement was added to handle it
+  run: |
+    mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.changed-files.outputs.added_modified }}')
     for added_modified_file in "${added_modified_files[@]}"; do
-      echo "Do something with this ${added_modified_file}."
+      if [[ ${added_modified_file} == *.sql ]]; then
+        echo sql detected, executing: ~/snowflake/snowsql -f ${added_modified_file}.
+        ~/snowflake/snowsql -f ${added_modified_file}
+      fi
     done
 ```
 
